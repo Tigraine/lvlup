@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="lvlup.js"></script>
+		<style>
+			#drop-area {
+				width: 400px;
+				border: 2px dotted black;
+				height: 60px;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload = function () {
+				lvlup("drop-area", {
+					progress: function (percent) {
+						console.log("progress: " + percent);
+					},
+					success: function (file) {
+						console.log("finished uploading " + file.fileName);
+					}
+				});
+			};
+		</script>
+	</head>
+	<body>
+		<div id="drop-area">
+			<span>Drop files here</span>
+		</div>
+	</body>
+</html>
