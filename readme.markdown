@@ -15,15 +15,22 @@ Sample usage:
 
 ```js
 	window.onload = function () {
-		// drop-area is the ID of the div that acts as a drop-target
-		lvlup("drop-area", {
-			progress: function (percent) {
-				//This method gets called periodically while the file is being uploaded with it's progress
-				console.log("progress: " + percent);
-			},
-			success: function (file) {
-				//Callback once the upload is finished
-				console.log("finished uploading " + file.fileName);
+		lvlup({
+			target: 'drop-area', //Id of element that acts as a drop target
+			url: 'upload', 		//Server URL that receives file upload (parameter 'content')
+			start: function(file) {
+				//start gets called for each file that gets uploaded.
+				//use this closure for progress indicators etc.
+				return {
+					progress: function (percent) {
+						//called with status updates on uploaded %
+						console.log(percent.toString() + "% of file " + file.fileName);
+					},
+					success: function () {
+						//called when file finished uploading
+						console.log("finished uploading " + file.fileName);
+					}
+				}
 			}
 		});
 	};
