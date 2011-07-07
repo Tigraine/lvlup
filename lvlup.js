@@ -1,5 +1,3 @@
-// Usage: options.target, options.start[ options.success, options.progress]
-
 function lvlup(options) {
 	(function (){
 		"use strict";
@@ -27,13 +25,12 @@ function lvlup(options) {
 			dropTarget.addEventListener("dragover", preventDefault, false);
 			dropTarget.addEventListener("drop", function (evt) {
 				var files = evt.dataTransfer.files,
-					i, file, callbackScope;
+					i, file;
 
 				for( i = 0; i < files.length; i += 1) {
 					file = files[i];
 					(function (file) {
-						callbackScope = options.start(file);
-						console.log(callbackScope);
+						var callbackScope = options.start(file);
 						uploadFile(file, {
 							progress: function (percent) {
 								console.log(callbackScope);
