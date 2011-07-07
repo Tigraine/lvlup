@@ -35,6 +35,12 @@ Sample usage:
 		});
 	};
 ```
+
+Demo
+----
+
+To see lvlup! in action run the server.rb script that will start up a minimal sinatra application to demonstrate lvlup with progressbars.
+
 License
 -------
 

@@ -9,16 +9,38 @@
 				border: 2px dotted black;
 				height: 60px;
 			}
+			.progress {
+				 border: 1px solid black;
+				 width: 300px;
+				 height: 24px;
+				 padding: 1px;
+			}
+			.pct {
+				width: 40px;
+				display: inline-block;
+			}
+			.bar {
+				width: 1%;
+				background-color: lightblue;
+				height: 24px;
+				color: black;
+				overflow: hidden;
+			}
 		</style>
 		<script type="text/javascript">
 			window.onload = function () {
+				var area = $('#files');
 				lvlup({
 					target: 'drop-area',
 					url: 'upload',
 					start: function(file) {
+						var indicator = $('<div><div class="progress"><div class="bar"></div></div><span class="pct">0%</span>' + file.fileName + '</div>');
+						area.append(indicator);
 						return {
 							progress: function (percent) {
-								console.log(percent.toString() + "% of file " + file.fileName);
+								indicator.find('.bar')
+									.css('width', percent.toString() + '%');
+								indicator.find('.pct').text(percent.toString() + '%');
 							},
 							success: function () {
 								console.log("finished uploading " + file.fileName);
