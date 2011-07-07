@@ -12,26 +12,16 @@
 		</style>
 		<script type="text/javascript">
 			window.onload = function () {
-				var i = 0;
 				lvlup({
 					target: 'drop-area',
 					url: 'upload',
 					start: function(file) {
-						var indicator = $('<p>' + file.fileName + '</p>'),
-							progress = $('<span>0%</span>');
-						indicator.append(progress);
-						$('#files').append(indicator);
-						i += 1;
-						console.log("opening scope " + i.toString());
-						
 						return {
 							progress: function (percent) {
-								console.log("progress " + i);
-								progress.text(percent.toString() + '%');
+								console.log(percent.toString() + "% of file " + file.fileName);
 							},
 							success: function () {
 								console.log("finished uploading " + file.fileName);
-								progress.text("finished");
 							}
 						}
 					}

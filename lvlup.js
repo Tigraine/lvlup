@@ -33,7 +33,6 @@ function lvlup(options) {
 						var callbackScope = options.start(file);
 						uploadFile(file, {
 							progress: function (percent) {
-								console.log(callbackScope);
 								callbackScope.progress.call(dropTarget, percent, evt);
 							},
 							success: function (evt) {
