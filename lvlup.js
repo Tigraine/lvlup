@@ -1,4 +1,6 @@
-function lvlup(target, callbacks) {
+// Usage: options.target, options.start[ options.success, options.progress]
+
+function lvlup(options) {
 	(function (){
 		"use strict";
 		var uploadFile = function (file, callbacks) {
@@ -6,9 +8,6 @@ function lvlup(target, callbacks) {
 				fd = new FormData();
 
 			fd.append("content", file);
-
-			callbacks.progress = callbacks.progress || function () { };
-			callbacks.success = callbacks.success || function () { };
 
 			xhr.upload.addEventListener("progress", function (evt) {
 				var progressPct = Math.floor( evt.loaded * 100 / evt.total );
@@ -21,25 +20,30 @@ function lvlup(target, callbacks) {
 
 		},
 		createDragDrop = function () {
-			var dropTarget = document.getElementById(target),
+			var dropTarget = document.getElementById(options.target),
 				preventDefault = function (evt) { evt.preventDefault(); };
 			if (dropTarget === null) return; 	//Nothing to do - No target area
 
 			dropTarget.addEventListener("dragover", preventDefault, false);
 			dropTarget.addEventListener("drop", function (evt) {
 				var files = evt.dataTransfer.files,
-					i, file;
+					i, file, callbackScope;
 
 				for( i = 0; i < files.length; i += 1) {
 					file = files[i];
-					uploadFile(file, {
-						progress: function (percent) {
-							callbacks.progress.call(dropTarget, percent);
-						},
-						success: function (evt) {
-							callbacks.success.call(dropTarget, file);
-						}
-					});
+					(function (file) {
+						callbackScope = options.start(file);
+						console.log(callbackScope);
+						uploadFile(file, {
+							progress: function (percent) {
+								console.log(callbackScope);
+								callbackScope.progress.call(dropTarget, percent);
+							},
+							success: function (evt) {
+								callbackScope.success.call(dropTarget, file);
+							}
+						});
+					}(file));
 				}
 				preventDefault(evt);
 			}, false);

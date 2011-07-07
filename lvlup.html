@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 		<script type="text/javascript" src="lvlup.js"></script>
 		<style>
 			#drop-area {
@@ -11,12 +12,27 @@
 		</style>
 		<script type="text/javascript">
 			window.onload = function () {
-				lvlup("drop-area", {
-					progress: function (percent) {
-						console.log("progress: " + percent);
-					},
-					success: function (file) {
-						console.log("finished uploading " + file.fileName);
+				var i = 0;
+				lvlup({
+					target: 'drop-area',
+					start: function(file) {
+						var indicator = $('<p>' + file.fileName + '</p>'),
+							progress = $('<span>0%</span>');
+						indicator.append(progress);
+						$('#files').append(indicator);
+						i += 1;
+						console.log("opening scope " + i.toString());
+						
+						return {
+							progress: function (percent) {
+								console.log("progress " + i);
+								progress.text(percent.toString() + '%');
+							},
+							success: function () {
+								console.log("finished uploading " + file.fileName);
+								progress.text("finished");
+							}
+						}
 					}
 				});
 			};
@@ -25,6 +41,8 @@
 	<body>
 		<div id="drop-area">
 			<span>Drop files here</span>
+		</div>
+		<div id="files">
 		</div>
 	</body>
 </html>
