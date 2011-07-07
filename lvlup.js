@@ -13,7 +13,7 @@ function lvlup(options) {
 			});
 			xhr.addEventListener("load", callbacks.success, false);
 
-			xhr.open("POST", "upload");
+			xhr.open(options.method || "POST", options.url);
 			xhr.send(fd);
 
 		},
@@ -34,10 +34,10 @@ function lvlup(options) {
 						uploadFile(file, {
 							progress: function (percent) {
 								console.log(callbackScope);
-								callbackScope.progress.call(dropTarget, percent);
+								callbackScope.progress.call(dropTarget, percent, evt);
 							},
 							success: function (evt) {
-								callbackScope.success.call(dropTarget, file);
+								callbackScope.success.call(dropTarget, evt.target.responseText, evt);
 							}
 						});
 					}(file));
